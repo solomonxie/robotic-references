@@ -4,4 +4,7 @@ detect:
 	@./detect.sh
 
 deploy:
-	@./deploy.sh "$(FILE)" "$(SPEED)"
+	@./deploy.sh $(filter-out $@,$(MAKECMDGOALS)) "$(SPEED)"
+
+%:
+	@:

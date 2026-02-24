@@ -1,9 +1,12 @@
-.PHONY: detect deploy
+.PHONY: detect deploy check-deps
 
-detect:
+check-deps:
+	@command -v arduino-cli >/dev/null || { echo "Installing arduino-cli..."; brew install arduino-cli; }
+
+detect: check-deps
 	@./detect.sh
 
-deploy:
+deploy: check-deps
 	@./deploy.sh $(filter-out $@,$(MAKECMDGOALS)) "$(SPEED)"
 
 %:

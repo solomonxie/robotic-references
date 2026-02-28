@@ -4,14 +4,15 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 detect_port() {
-  arduino-cli board list | awk '/Serial Port \(USB\)/{print $1; exit}'
+  arduino-cli board list 2>/dev/null | awk '/Serial Port \(USB\)/{print $1; exit}'
 }
 
 detect_chip() {
   local port="$1"
-  python3 -m venv venv
-  venv/bin/pip install --upgrade pip esptool
-  venv/bin/python -m esptool --port "$port" flash-id
+  python3 -m venv venv >/dev/null 2>&1
+  venv/bin/pip install -q --upgrade pip esptool
+  venv/bin/python -m esptool --port "$port" flash-id 2>/dev/null \
+    | grep -E "Chip type:|Features:|Crystal|MAC:|Detected flash size"
 }
 
 # Only run standalone when executed directly, not when sourced by deploy.sh.

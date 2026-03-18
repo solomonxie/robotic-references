@@ -7,7 +7,7 @@ detect_port() {
   arduino-cli board list 2>/dev/null | awk '/Serial Port \(USB\)/{print $1; exit}'
 }
 
-# Spec lookup keyed on the chip family esptool actually detects over serial
+# Spec lookup keyed on the chip family `esptool` actually detects over serial
 # (the "Chip type:" line, e.g. ESP32-D0WD-V3 vs ESP32-S3 vs ESP32-C3). esptool
 # reports the silicon part number but not RAM size, Bluetooth version, or a
 # marketing name, so those three come from Espressif's datasheets per family.

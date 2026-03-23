@@ -7,4 +7,4 @@ detect: check-deps
 	@./detect.sh
 
 deploy: check-deps
-	@./deploy.sh "$(SPEED)"
+	@./deploy.sh "$(F)" "$(SPEED)"

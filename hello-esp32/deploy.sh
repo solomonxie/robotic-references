@@ -9,6 +9,16 @@ FILE="${1:?Usage: ./deploy.sh <path/to/sketch.ino> [speed]}"
 SPEED="${2:-}"
 BOARD_ID="esp32:esp32:esp32"
 
+# Known-good upload speed per chip family, from what has actually worked on
+# that hardware (USB-serial adapters, not the chip, are usually the limit).
+# Unlisted families fall back to 115200, the most broadly compatible rate.
+preset_speed() {
+  case "$1" in
+    ESP32-*) echo "115200" ;;  # verified on this ESP32 Dev Board Kit
+    *)       echo "115200" ;;
+  esac
+}
+
 [ -f "$FILE" ] || { echo "File not found: $FILE"; exit 1; }
 
 SKETCH_NAME="$(basename "${FILE%.*}")"
@@ -30,13 +40,25 @@ mkdir -p "$BUILD_DIR"
 cp "$FILE" "$BUILD_DIR/$SKETCH_NAME.ino"
 arduino-cli compile --fqbn "$BOARD_ID" "$BUILD_DIR"
 
-SPEEDS="${SPEED:-921600 460800 230400 115200 57600}"
-for speed in $SPEEDS; do
-  echo "--- trying upload at $speed baud ---"
-  if arduino-cli upload -p "$PORT" --fqbn "$BOARD_ID:UploadSpeed=$speed" "$BUILD_DIR"; then
-    echo "Uploaded at $speed baud."
-    exit 0
-  fi
+SPEED="${SPEED:-$(preset_speed "$DETECTED_CHIP_TYPE")}"
+echo "--- uploading at $SPEED baud ---"
+if arduino-cli upload -p "$PORT" --fqbn "$BOARD_ID:UploadSpeed=$SPEED" "$BUILD_DIR"; then
+  echo "Uploaded at $SPEED baud."
+  exit 0
+fi
+
+echo "Upload failed at $SPEED baud."
+echo "Pick a speed to retry:"
+OTHER_SPEEDS=(921600 460800 230400 115200 57600)
+select CHOSEN in "${OTHER_SPEEDS[@]}"; do
+  [ -n "$CHOSEN" ] && break
+  echo "Invalid choice, try again."
 done
-echo "Upload failed at all speeds: $SPEEDS"
+
+echo "--- retrying upload at $CHOSEN baud ---"
+if arduino-cli upload -p "$PORT" --fqbn "$BOARD_ID:UploadSpeed=$CHOSEN" "$BUILD_DIR"; then
+  echo "Uploaded at $CHOSEN baud."
+  exit 0
+fi
+echo "Upload failed at $CHOSEN baud too."
 exit 1

@@ -4,14 +4,6 @@ Progressive learning series for ESP32 (Arduino framework, C/C++, `.ino` sketches
 same toolchain as hello-arduino). Each step is a standalone file that builds on the
 previous one, adding exactly one new concept.
 
-## Steps
-
-| File | Description |
-|------|-------------|
-| `hello_01_flashlight.ino` | Blink the onboard LED on GPIO2 |
-| `hello_02_button.ino` | Read a pushbutton state over Serial |
-| `hello_03_3lights.ino` | Cycle blue/red/green LEDs on GPIO18/19/21 one at a time |
-
 ## Deploying
 
 Requires [`arduino-cli`](https://arduino.github.io/arduino-cli/) (`brew install arduino-cli`;

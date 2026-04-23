@@ -8,7 +8,7 @@ previous one, adding exactly one new concept.
 
 | File | Description |
 |------|-------------|
-| `hello_01_2lights.ino` | Blink an LED on GPIO2 |
+| `hello_01_flashlight.ino` | Blink the onboard LED on GPIO2 |
 | `hello_02_button.ino` | Read a pushbutton state over Serial |
 | `hello_03_3lights.ino` | Cycle blue/red/green LEDs on GPIO18/19/21 one at a time |
 

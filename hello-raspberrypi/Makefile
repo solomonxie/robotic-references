@@ -7,4 +7,4 @@ flash:
 	@./flash.sh "$(IMG)" "$(DISK)" "$(SSID)" "$(PASS)"
 
 provision: check-deps
-	@ansible-playbook -i ../ansible/inventory.ini ../ansible/site.yml --limit raspberrypi
+	@ansible-playbook -i ansible/inventory.ini ansible/site.yml

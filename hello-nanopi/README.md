@@ -13,11 +13,12 @@ Runs Armbian (Debian-based).
 
 ```sh
 ./flash.sh armbian-nanopi-r2s.img.xz /dev/disk4   # write SD card + first-boot network config
-make provision   # installs base packages + hostname, via ../ansible
+make provision   # installs base packages + hostname, via ./ansible
 ```
 
 `flash.sh` writes the OS image and configures first-boot networking (DHCP over the
-LAN1 Ethernet port -- there's no WiFi to join). `provision` runs the shared `ansible/`
-playbook (see its `manual_*.sh` files for the plain-shell equivalent of what it does).
+LAN1 Ethernet port -- there's no WiFi to join). `provision` runs this folder's own
+`ansible/` playbook (see its `manual_*.sh` files for the plain-shell equivalent of
+what it does).
 
 Default login after first boot: `root` / `1234` (forced password change on first SSH).

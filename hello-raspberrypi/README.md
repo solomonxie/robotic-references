@@ -10,10 +10,9 @@ is too old for Raspberry Pi OS Bookworm, so it runs the Legacy (Bullseye-based) 
 
 ```sh
 ./flash.sh raspios-lite-armhf.img.xz /dev/disk4 "MyWiFi" "wifi-password"   # write SD card + headless config
-make provision   # installs base packages + enables camera/I2C/SPI, via ./ansible
+make provision HOST=pi@pi-zero.local   # sets hostname, installs base packages, enables camera/I2C/SPI
 ```
 
 `flash.sh` writes the OS image and drops in `ssh` + `userconf.txt` + `wpa_supplicant.conf`
-so the Pi boots headless and joins your WiFi with no monitor/keyboard needed. `provision`
-runs this folder's own `ansible/` playbook (see its `manual_*.sh` files for the plain-shell
-equivalent of what it does).
+so the Pi boots headless and joins your WiFi with no monitor/keyboard needed. `provision.sh`
+runs its commands over SSH -- plain and safe to re-run, nothing more to install locally.

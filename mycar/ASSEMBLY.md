@@ -1,7 +1,7 @@
 # mycar assembly (Phase 1, steps 1-4: physical + wiring, no code)
 
-Steps 5-9 (firmware, then the Pi dashboard) are in [esp32/](./esp32) and
-[pi/](./pi) once these are done -- see [README.md](./README.md#phased-plan).
+Steps 5-9 (firmware, then the Pi dashboard) live flat in this same folder
+once these are done -- see [README.md](./README.md#phased-plan).
 
 ## Step 1: Mount motors + wheels on the chassis
 
@@ -53,8 +53,7 @@ boards. Any ESP32 GPIO works for these except the input-only pins
 any other free GPIOs. Wire each L298N's GND to the ESP32's GND (shared
 reference, even though motor power is separate from the ESP32's own supply).
 
-Write down your exact pin choices here once wired -- the firmware in
-[esp32/](./esp32) will need them:
+Write down your exact pin choices here once wired -- the firmware will need them:
 
 | Motor | IN1 | IN2 | EN (PWM) |
 |---|---|---|---|
@@ -63,5 +62,5 @@ Write down your exact pin choices here once wired -- the firmware in
 | Rear-left | | | |
 | Rear-right | | | |
 
-Once this is done and double-checked, move to esp32/ for step 5 (spin one
-wheel, no code complexity yet).
+Once this is done and double-checked, move to step 5 (spin one wheel, no
+code complexity yet).

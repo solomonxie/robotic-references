@@ -24,7 +24,8 @@ Talk output reuses the Bluetooth speaker you already have -- nothing to buy ther
 
 | Item | Spec | Est. price | Notes |
 |---|---|---|---|
-| Battery pack | 2S LiPo/Li-ion (7.4V nominal), or similar landing near 5-6V after the L298N's ~2V drop | ~$10-20 | The chassis kit's battery box came empty. Motors are rated 3-6V -- verify actual output with a multimeter (ASSEMBLY.md step 2) before trusting any voltage math |
+| 18650 Li-ion cells | 2x, for the kit's included battery box (count its cell slots to confirm 2 is right) | ~$8-15 for 2 | Motors are rated 3-7.4V per the kit's manual; 2 cells in series (~7.4V nominal) lands in spec even before the L298N's own drop -- still verify actual output with a multimeter (ASSEMBLY.md step 2) |
+| 18650 charger | For the cells above, if not already owned | ~$10-15 | Skip if you already have a compatible charger |
 | [UBEC buck converter](https://www.adafruit.com/product/1385) | 5V @ 3A output | ~$8-17 | For a clean, separate 5V rail for the Pi -- don't share the motor battery directly, stall current can brown it out |
 | On/off switch + inline fuse | For the main battery line | ~$3-5 | Not strictly required, but standard practice for a battery-powered mobile robot |
 

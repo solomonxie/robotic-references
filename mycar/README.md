@@ -10,7 +10,8 @@ but not run end-to-end until you have wheels turning to test against.
 
 ## Hardware inventory (on hand)
 
-Confirmed from the kit box lid and the chassis kit's product listing (Aug 2026).
+Confirmed from the kit box lid, the chassis kit's official product manual, and
+its product listing (Aug 2026).
 
 - 3x ESP32 Dev Kit boards
 - 5x L298N motor driver modules
@@ -21,14 +22,16 @@ Confirmed from the kit box lid and the chassis kit's product listing (Aug 2026).
   full resistor assortment. **Confirmed NOT in this kit**: no ultrasonic
   sensor, no servo, no IR sensor.
 - HC-SR04 ultrasonic sensor -- separate from the kit above, confirmed on hand
-- **DWWTKL Mecanum Wheel Car Kit** -- aluminum chassis (186x161x91mm, 1500g
-  load capacity), 4x **mecanum wheels** (68mm dia., angled rollers --
-  omnidirectional, and *handed*: they must be mounted in the correct
-  front/rear-left/right orientation or the car won't strafe), 4x
-  **independent** TT gear motors (1:120 ratio, **3-6V rated** -- this is low;
-  see the power note below), motors include **speed encoders** (not used in
-  Phase 1, useful later for odometry/closed-loop speed), battery box
-  **included but no battery**, mounting screws
+- **DWWTKL Mecanum Wheel Car Kit** -- 2-layer aluminum chassis (186x161x91mm,
+  1500g load capacity), 4x **mecanum wheels** (68mm dia., 2x type "A" + 2x
+  type "B", angled rollers -- omnidirectional, and *handed*: A goes
+  front-left + rear-right, B goes front-right + rear-left, confirmed from the
+  kit's manual diagram), 4x **independent** TT gear motors (**1:48** ratio,
+  **3-7.4V rated** per the manual), TT joints (motor-to-wheel couplers),
+  coding discs for the motor encoders (**no encoder sensor board included**
+  in this kit -- open item if you want encoder feedback later), **18650**
+  battery box (cells not included -- see the power note below), mounting
+  screws
 - Raspberry Pi Zero W (2017) -- see [hello-raspberrypi](../hello-raspberrypi) for OS setup
 - NanoPi R2S -- optional, see [hello-nanopi](../hello-nanopi)
 - Bluetooth speaker
@@ -69,10 +72,33 @@ works with plain wheels). 2 of the 5 L298N boards give exactly 4 independent
 channels (2 boards x 2 channels each), one per wheel; the firmware mixes them
 for forward/strafe/rotate. 3 L298N boards stay spare.
 
-**Motor voltage**: the TT motors are rated 3-6V, but the L298N's own H-bridge
-drops ~2V between input and output -- so a 7.4V (2S) battery could land in a
-safe ~5.5V at the motor, which is a common trick, but this must be verified
-with a multimeter before running at full duty cycle, not assumed.
+**Motor voltage**: the TT motors are rated 3-7.4V per the kit's own manual.
+A 2S (7.4V nominal) 18650 pack -- which is what the kit's battery box takes --
+lands comfortably in that range even before the L298N's own ~2V drop, but
+verify with a multimeter before running at full duty cycle regardless.
+
+**Mecanum mixing reference** (from the kit's manual, for steps 6-7's firmware
+later -- transcribed from a photo, worth double-checking against the physical
+page before trusting it blindly, especially the strafe rows). The manual's
+table has 14 rows total; the 4 "single-axle-only turn" variants are omitted
+here as less essential -- check the physical page if you end up wanting them:
+
+| Motion | M2 Front-left (A) | M1 Front-right (B) | M3 Rear-left (B) | M4 Rear-right (A) |
+|---|---|---|---|---|
+| Forward | CW | CW | CW | CW |
+| Backward | CCW | CCW | CCW | CCW |
+| Strafe left | CCW | CW | CW | CCW |
+| Strafe right | CW | CCW | CCW | CW |
+| Rotate left (in place) | CCW | CW | CCW | CW |
+| Rotate right (in place) | CW | CCW | CW | CCW |
+| Diagonal front-left | STOP | CW | CW | STOP |
+| Diagonal front-right | CW | STOP | STOP | CW |
+| Diagonal rear-left | CCW | STOP | STOP | CCW |
+| Diagonal rear-right | STOP | CCW | CCW | STOP |
+
+Even if a row here is mis-transcribed, step 7 (mecanum mixing test) is
+exactly the point where that would surface -- if strafing goes the wrong
+way, flip that row's signs rather than trusting the table over reality.
 
 **LLM**: OpenAI API over the Pi's WiFi connection (your API key). This is a
 metered cloud service -- expect a small ongoing cost per patrol/conversation,

@@ -46,10 +46,11 @@ isn't -- dry-fit before final tightening.
 2. The kit's battery box takes **18650 Li-ion cells** (not included). Count
    its cell slots to know what you're working with: 1 cell = ~3.7V nominal
    (~4.2V full charge), 2 cells in series = ~7.4V nominal (~8.4V full).
-   The motors' own rated range is **3-7.4V** (per the kit's manual) -- a 2S
-   box lands comfortably in spec even before the L298N's own ~2V drop knocks
-   it down further, so this is a safer margin than generic LiPo guidance
-   would suggest.
+   The motors' own rated range is **3-6V** (printed on the motor casings).
+   The kit manual's "3-7.4V" figure is the *driver system's* supply input
+   range, not the motor's -- a 2S (7.4V) box feeds the L298N, whose own ~2V
+   drop brings what reaches the motor back down near 5.4V, inside the
+   motor's real 3-6V range.
 3. With the battery connected and switch on, **measure the L298N's output
    terminals with a multimeter before wiring any motor** -- confirm it's in
    the safe range regardless (good practice even when the numbers should

@@ -22,12 +22,15 @@ Talk output reuses the Bluetooth speaker you already have -- nothing to buy ther
 
 ## Power (needed before Phase 1)
 
+Full design/reasoning in [POWER.md](./POWER.md).
+
 | Item | Spec | Est. price | Notes |
 |---|---|---|---|
-| 18650 Li-ion cells | 2x, for the kit's included battery box (count its cell slots to confirm 2 is right) | ~$8-15 for 2 | Motors are rated 3-6V (printed on the casing); the L298N's own ~2V drop brings a 2-cell (~7.4V) pack down near 5.4V at the motor -- still verify actual output with a multimeter (ASSEMBLY.md step 2) |
-| 18650 charger | For the cells above, if not already owned | ~$10-15 | Skip if you already have a compatible charger |
-| [UBEC buck converter](https://www.adafruit.com/product/1385) | 5V @ 3A output | ~$8-17 | For a clean, separate 5V rail for the Pi -- don't share the motor battery directly, stall current can brown it out |
-| On/off switch + inline fuse | For the main battery line | ~$3-5 | Not strictly required, but standard practice for a battery-powered mobile robot |
+| **Protected** 18650 Li-ion cells | 2x, for the kit's included battery box (count its cell slots to confirm 2 is right) | ~$10-18 for 2 | Protected, not bare cells -- the built-in protection PCB is the actual safety measure here, this build has no separate BMS |
+| 18650 bay charger | Standalone charger, e.g. Nitecore/XTAR-style | ~$10-15 | The battery holder has no balance-charge tap -- remove cells to charge individually, don't try to charge the assembled pack |
+| [UBEC buck converter](https://www.adafruit.com/product/1385) | 5V @ 3A output | ~$8-17 | Separate clean 5V rail for the Pi + ESP32 -- don't power logic boards from the L298N's onboard regulator or share the motor battery directly |
+| Bulk capacitor | 470-1000uF electrolytic | ~$1-3 | Across the buck converter's output -- smooths transient dips from WiFi/motor current spikes |
+| On/off switch + inline fuse | 5-10A fuse, for the main battery line | ~$3-5 | Not strictly required, but standard practice for a battery-powered mobile robot |
 
 ## Flag if missing
 

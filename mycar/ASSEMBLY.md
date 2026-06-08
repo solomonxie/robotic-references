@@ -1,7 +1,9 @@
 # mycar assembly (Phase 1, steps 1-4: physical + wiring, no code)
 
 Steps 5-9 (firmware, then the Pi dashboard) live flat in this same folder
-once these are done -- see [README.md](./README.md#phased-plan).
+once these are done -- see [README.md](./README.md#phased-plan). Power supply
+design (battery, regulation, wiring for all 4 motors + Pi + ESP32) is its own
+document: [POWER.md](./POWER.md).
 
 **No screw-by-screw mechanical diagram found.** The kit's manual page and its
 linked docs (a motor wiring-test PDF for a *different* driver board, not
@@ -41,24 +43,25 @@ isn't -- dry-fit before final tightening.
 
 ## Step 2: Wire power
 
-1. Wire the battery box -> an on/off switch -> both L298N boards' power
-   input terminals (+ and -). Don't connect a battery yet.
-2. The kit's battery box takes **18650 Li-ion cells** (not included). Count
-   its cell slots to know what you're working with: 1 cell = ~3.7V nominal
-   (~4.2V full charge), 2 cells in series = ~7.4V nominal (~8.4V full).
-   The motors' own rated range is **3-6V** (printed on the motor casings).
-   The kit manual's "3-7.4V" figure is the *driver system's* supply input
-   range, not the motor's -- a 2S (7.4V) box feeds the L298N, whose own ~2V
-   drop brings what reaches the motor back down near 5.4V, inside the
-   motor's real 3-6V range.
-3. With the battery connected and switch on, **measure the L298N's output
-   terminals with a multimeter before wiring any motor** -- confirm it's in
-   the safe range regardless (good practice even when the numbers should
-   work out). If it's too high, don't proceed to Step 3 yet (an in-line buck
-   converter or fewer cells is safer than risking the motors).
-4. Keep the Pi/ESP32 on a separate 5V supply, not sharing the motor battery
-   directly -- motor stall current can brown out logic boards on the same
-   rail (see README's power note).
+Full design/reasoning is in [POWER.md](./POWER.md) -- this is just the build
+sequence:
+
+1. Get 2 protected 18650 cells + a bulk 470-1000uF capacitor + the UBEC buck
+   converter from the shopping list before starting this step.
+2. Wire the battery box -> an on/off switch -> a fuse -> both L298N boards'
+   power input terminals (+ and -), in parallel. Don't insert cells yet.
+3. Separately, wire the same fused battery line -> the UBEC buck converter's
+   input -> its 5V/GND output -> the bulk capacitor across it.
+4. Insert the cells, switch on, and **measure both outputs with a multimeter
+   before connecting anything else**: the L298N's terminals (expect ~5.4V
+   after its own drop -- see POWER.md) and the buck converter's output
+   (expect a clean 5V). Don't proceed to Step 3 until both check out.
+5. Wire the buck converter's 5V/GND to the Pi's GPIO pins (pin 2/6) and the
+   ESP32's VIN/GND pins directly -- not through either board's USB port
+   (POWER.md explains why).
+6. Tie all grounds together -- battery, both L298N boards, buck converter,
+   Pi, ESP32 -- this is required for the ESP32's control signals to the
+   L298N to work, not optional.
 
 ## Step 3: Wire motors to the L298N boards
 

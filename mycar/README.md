@@ -13,29 +13,39 @@ but not run end-to-end until you have wheels turning to test against.
 Confirmed from the kit box lid, the chassis kit's official product manual, and
 its product listing (Aug 2026).
 
+**Boards**
 - 3x ESP32 Dev Kit boards
-- 5x L298N motor driver modules
-- **Miuzei MA49 "Electronic Fun Kit"** -- power supply module, breadboard,
-  jumper/Dupont wires, pin headers, 2x potentiometer, LEDs + RGB LEDs, 4N35
-  optocoupler, 74HC595 shift register, NPN transistors, **photoresistors,
-  thermistors**, active/passive buzzers, buttons/switches, capacitors, diodes,
-  full resistor assortment. **Confirmed NOT in this kit**: no ultrasonic
-  sensor, no servo, no IR sensor.
-- HC-SR04 ultrasonic sensor -- separate from the kit above, confirmed on hand
-- **DWWTKL Mecanum Wheel Car Kit** -- 2-layer aluminum chassis (186x161x91mm,
-  1500g load capacity), 4x **mecanum wheels** (68mm dia., 2x type "A" + 2x
-  type "B", angled rollers -- omnidirectional, and *handed*: A goes
-  front-left + rear-right, B goes front-right + rear-left, confirmed from the
-  kit's manual diagram), 4x **independent** TT gear motors (**1:48** ratio,
-  **3-6V rated**, printed on the motor casings -- the driver system accepts
-  up to 7.4V input per the manual, dropped down by the L298N before it
-  reaches the motor), TT joints (motor-to-wheel couplers),
-  coding discs for the motor encoders (**no encoder sensor board included**
-  in this kit -- open item if you want encoder feedback later), **18650**
-  battery box (cells not included -- see [POWER.md](./POWER.md)), mounting
-  screws
 - Raspberry Pi Zero W (2017) -- see [hello-raspberrypi](../hello-raspberrypi) for OS setup
 - NanoPi R2S -- optional, see [hello-nanopi](../hello-nanopi)
+
+**Motor driving**
+- 5x L298N motor driver modules
+- 2-layer aluminum chassis, 186x161x91mm, 1500g load capacity (DWWTKL Mecanum Wheel Car Kit)
+- 4x mecanum wheels, 68mm dia., 2x type "A" + 2x type "B" (*handed*: A goes
+  front-left + rear-right, B goes front-right + rear-left -- confirmed from
+  the kit's manual diagram)
+- 4x independent TT gear motors, 1:48 ratio, **3-6V rated** (printed on the
+  casings -- the driver system accepts up to 7.4V input per the manual,
+  dropped down by the L298N before it reaches the motor)
+- 4x TT joints (motor-to-wheel couplers)
+- 4x coding discs, for the motors' speed encoders (**no encoder sensor board
+  included** in this kit -- open item if you want encoder feedback later)
+- 18650 x2 battery holder (included with the chassis kit; cells not included
+  -- see [POWER.md](./POWER.md))
+- Mounting screws (assorted, from the chassis kit)
+
+**Sensors**
+- Elegoo HC-SR04 ultrasonic distance sensor (4-pin: VCC, Trig, Echo, GND)
+- IR Infrared Obstacle Avoidance Sensor x2 (3-pin: VCC, GND, OUT digital,
+  onboard sensitivity adjustment)
+
+**Electronic Fun Kit** (Miuzei MA49) -- power supply module, breadboard,
+jumper/Dupont wires, pin headers, 2x potentiometer, LEDs, RGB LEDs, 4N35
+optocoupler, 74HC595 shift register, NPN transistors, photoresistors,
+thermistors, active buzzer, passive buzzer, buttons, switches, capacitors,
+diodes, full resistor assortment. **Confirmed NOT in this kit**: no servo.
+
+**Audio**
 - Bluetooth speaker
 
 ## Architecture
@@ -163,10 +173,12 @@ not a one-time hardware purchase.
   dedicated WiFi AP or VPN/reverse-proxy for remote dashboard access).
 - **MicroSD card for the Pi Zero** -- not in your listed inventory; flagged in
   the shopping list in case it's still needed.
-- **Mecanum wheel handedness unconfirmed** -- check for L/R or A/B markings on
-  the wheel hubs before mounting (ASSEMBLY.md step 1); mounting them in the
-  wrong front/rear-left/right positions means the car drives fine forward/back
-  but can't strafe correctly.
+- **Which physical wheel is A vs B isn't confirmed yet** -- the front-left/
+  rear-right = A, front-right/rear-left = B *arrangement* is confirmed from
+  the manual, but matching that to your actual 4 wheels (hub markings or
+  visible roller angle) still needs doing at mount time (ASSEMBLY.md step 1);
+  getting it backward means the car drives fine forward/back but can't
+  strafe correctly.
 
 ## Missing / to buy
 

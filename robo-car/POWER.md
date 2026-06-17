@@ -1,4 +1,4 @@
-# mycar power supply design
+# robo-car power supply design
 
 One battery, two independent regulation paths -- motors get raw battery
 voltage through the L298N's own drop, logic (Pi + ESP32) gets a clean

@@ -1,4 +1,4 @@
-# mycar
+# robo-car
 
 An autonomous home-patrol robot: drives around the house on its own checking on
 things like a patrol officer, sees, hears, talks, avoids obstacles, and can be

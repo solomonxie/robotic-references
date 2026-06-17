@@ -1,4 +1,4 @@
-"""mycar Phase 1: Drive -- minimal web dashboard for manual control.
+"""robo-car Phase 1: Drive -- minimal web dashboard for manual control.
 
 Run on the Pi (inside its venv, see README): python3 app.py
 Then open http://<pi-hostname>.local:5000 from any device on the home WiFi.
@@ -18,7 +18,7 @@ ser = serial.Serial("/dev/serial0", 115200, timeout=1)
 
 PAGE = """
 <!doctype html>
-<title>mycar</title>
+<title>robo-car</title>
 <style>
   body { font-family: sans-serif; text-align: center; margin-top: 2em; }
   button { font-size: 2em; width: 4em; height: 2em; margin: 0.2em; }

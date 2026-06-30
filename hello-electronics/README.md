@@ -23,5 +23,12 @@ venv/bin/python hello-electronics/hello_01_ohms_law.py
 5. LED current-limiting resistor -- applies steps 1+4 to a real component
    (the calc behind [hello-esp32](../hello-esp32)'s resistor+LED step)
 6. Capacitors -- RC charge/discharge time constant
-7. Battery runtime -- applies steps 1+4 to
-   [robo-car](../robo-car)'s 18650 pack (see its [POWER.md](../robo-car/POWER.md))
+7. Battery cells in series vs parallel -- mirrors steps 2+3, but for a
+   source: voltage adds in series, capacity adds in parallel
+8. Battery runtime -- applies steps 4+7 to
+   [robo-car](../robo-car)'s 2S1P 18650 pack (see its [POWER.md](../robo-car/POWER.md))
+9. Voltage regulation -- linear vs switching (buck) regulators, why
+   robo-car's logic rail uses a buck converter instead of just eating the
+   drop as heat
+10. Voltage sag under load + shared ground reference -- why robo-car
+    splits into two power rails but still ties every board's GND together

@@ -7,7 +7,4 @@ detect: check-deps
 	@./detect.sh
 
 deploy: check-deps
-	@./deploy.sh $(filter-out $@,$(MAKECMDGOALS)) "$(SPEED)"
-
-%:
-	@:
+	@./deploy.sh "$(SPEED)"

@@ -19,7 +19,7 @@ prints the exact ESP32 chip via `esptool` (installed into a local `venv/`), and 
 speeds from 921600 down to 57600 until one works — no need to hardcode a port or baud rate.
 
 ```sh
-make deploy              # prompts you to pick a .ino if there's more than one
-make detect               # just show port + chip info
-make deploy SPEED=115200  # skip the speed search
+make deploy F=hello_03_3lights.ino
+make detect                              # just show port + chip info
+make deploy F=hello_03_3lights.ino SPEED=115200   # skip the speed search
 ```

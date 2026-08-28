@@ -1,10 +1,7 @@
-.PHONY: flash provision check-deps
-
-check-deps:
-	@command -v ansible-playbook >/dev/null || { echo "Installing ansible..."; brew install ansible; }
+.PHONY: flash provision
 
 flash:
 	@./flash.sh "$(IMG)" "$(DISK)" "$(SSID)" "$(PASS)"
 
-provision: check-deps
-	@ansible-playbook -i ansible/inventory.ini ansible/site.yml
+provision:
+	@./provision.sh "$(HOST)"

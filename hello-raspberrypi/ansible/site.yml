@@ -1,5 +1,0 @@
-- hosts: raspberrypi
-  become: true
-  roles:
-    - base_setup
-    - raspberrypi

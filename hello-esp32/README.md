@@ -14,12 +14,13 @@ previous one, adding exactly one new concept.
 ## Deploying
 
 Requires [`arduino-cli`](https://arduino.github.io/arduino-cli/) (`brew install arduino-cli`;
-`make` installs it for you if missing). `deploy.sh` auto-detects the connected serial port,
-prints the exact ESP32 chip via `esptool` (installed into a local `venv/`), and tries upload
-speeds from 921600 down to 57600 until one works — no need to hardcode a port or baud rate.
+`make` installs it for you if missing). `deploy.sh` auto-detects the connected serial port
+and chip via `esptool` (installed into a local `venv/`), then uploads at a preset speed for
+that chip family (115200 by default). If that speed fails, it prompts you to pick another
+from a list instead of silently retrying every speed.
 
 ```sh
 make deploy F=hello_03_3lights.ino
 make detect                              # just show port + chip info
-make deploy F=hello_03_3lights.ino SPEED=115200   # skip the speed search
+make deploy F=hello_03_3lights.ino SPEED=230400   # override the preset speed
 ```

@@ -7,4 +7,4 @@ flash:
 	@./flash.sh "$(IMG)" "$(DISK)"
 
 provision: check-deps
-	@ansible-playbook -i ../ansible/inventory.ini ../ansible/site.yml --limit nanopi
+	@ansible-playbook -i ansible/inventory.ini ansible/site.yml

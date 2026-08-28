@@ -8,4 +8,18 @@ previous one, adding exactly one new concept.
 
 | File | Description |
 |------|-------------|
-| _(none yet)_ | |
+| `hello_03_3lights.ino` | Cycle green/red/blue LEDs on a breadboard |
+
+## Deploying
+
+Requires [`arduino-cli`](https://arduino.github.io/arduino-cli/) (`brew install arduino-cli`).
+The Makefile auto-detects the connected serial port, prints the exact ESP32 chip via
+`esptool` (installed into a local `venv/`), and tries upload speeds from 921600 down to
+57600 until one works — no need to hardcode a port or baud rate.
+
+```sh
+make deploy FILE=hello_03_3lights.ino
+make detect                              # just show port + chip info
+make deploy FILE=... SPEED=115200        # skip the speed search
+make clean
+```

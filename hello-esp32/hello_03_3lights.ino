@@ -1,5 +1,8 @@
 // Program 3: Cycle 3 LEDs (blue/red/green) one at a time
-// Wiring: GPIO18 = Blue, GPIO19 = Red, GPIO21 = Green, all sharing one GND rail.
+// Breadboard wiring:
+//   Blue LED  anode -> GPIO18, cathode -> GND (through resistor)
+//   Red LED   anode -> GPIO19, cathode -> GND (through resistor)
+//   Green LED anode -> GPIO21, cathode -> GND (through resistor)
 
 #define LED_BLUE  18
 #define LED_RED   19

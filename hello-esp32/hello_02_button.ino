@@ -1,4 +1,7 @@
 // Program 2: Read Pushbutton State
+// Breadboard wiring:
+//   Pushbutton pin 1 -> GPIO18
+//   Pushbutton pin 2 -> GND
 
 #define PB_PIN 18       // Pushbutton connected to GPIO18
 

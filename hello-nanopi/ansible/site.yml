@@ -1,5 +1,0 @@
-- hosts: nanopi
-  become: true
-  roles:
-    - base_setup
-    - nanopi

@@ -1,4 +1,5 @@
-// Program 1: Read Pushbutton State
+// Program 1: Flashing an LED light
+// No breadboard wiring needed: GPIO2 drives the onboard LED on most ESP32 dev boards.
 #define LED_PIN 2  // GPIO2
 #define PAUSE 250  // delay in ms
 

@@ -28,17 +28,19 @@ detect_chip() {
   venv/bin/pip install -q --upgrade pip esptool
   local out
   out=$(venv/bin/python -m esptool --port "$port" flash-id 2>/dev/null)
-  local chip_type flash_size
-  chip_type=$(echo "$out" | grep "Chip type:" | sed -E 's/^Chip type:[[:space:]]*//')
+  local flash_size
+  # DETECTED_CHIP_TYPE is deliberately global: deploy.sh reads it afterwards
+  # to pick a preset upload speed, without re-running esptool a second time.
+  DETECTED_CHIP_TYPE=$(echo "$out" | grep "Chip type:" | sed -E 's/^Chip type:[[:space:]]*//')
   flash_size=$(echo "$out" | grep "Detected flash size:" | sed -E 's/^Detected flash size:[[:space:]]*//')
 
   local model ram features
-  IFS='|' read -r model ram features <<< "$(chip_specs "$chip_type")"
+  IFS='|' read -r model ram features <<< "$(chip_specs "$DETECTED_CHIP_TYPE")"
 
   echo "Chip Model:  $model"
   echo "Flash size:  $flash_size"
   echo "RAM size:    $ram"
-  echo "Chip type:   $chip_type"
+  echo "Chip type:   $DETECTED_CHIP_TYPE"
   echo "Features:    $features"
   echo "$out" | grep -E "Crystal|MAC:"
 }

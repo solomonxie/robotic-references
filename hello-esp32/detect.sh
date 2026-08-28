@@ -2,6 +2,8 @@
 # Prints the connected ESP32's serial port and chip info.
 set -euo pipefail
 cd "$(dirname "$0")"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$(pwd)/..")"
+VENV="$REPO_ROOT/venv"
 
 detect_port() {
   arduino-cli board list 2>/dev/null | awk '/Serial Port \(USB\)/{print $1; exit}'
@@ -24,10 +26,10 @@ chip_specs() {
 
 detect_chip() {
   local port="$1"
-  python3 -m venv venv >/dev/null 2>&1
-  venv/bin/pip install -q --upgrade pip esptool
+  python3 -m venv "$VENV" >/dev/null 2>&1
+  "$VENV/bin/pip" install -q --upgrade pip esptool
   local out
-  out=$(venv/bin/python -m esptool --port "$port" flash-id 2>/dev/null)
+  out=$("$VENV/bin/python" -m esptool --port "$port" flash-id 2>/dev/null)
   local flash_size
   # DETECTED_CHIP_TYPE is deliberately global: deploy.sh reads it afterwards
   # to pick a preset upload speed, without re-running esptool a second time.

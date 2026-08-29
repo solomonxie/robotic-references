@@ -27,7 +27,9 @@ its product listing (Aug 2026).
   type "B", angled rollers -- omnidirectional, and *handed*: A goes
   front-left + rear-right, B goes front-right + rear-left, confirmed from the
   kit's manual diagram), 4x **independent** TT gear motors (**1:48** ratio,
-  **3-7.4V rated** per the manual), TT joints (motor-to-wheel couplers),
+  **3-6V rated**, printed on the motor casings -- the driver system accepts
+  up to 7.4V input per the manual, dropped down by the L298N before it
+  reaches the motor), TT joints (motor-to-wheel couplers),
   coding discs for the motor encoders (**no encoder sensor board included**
   in this kit -- open item if you want encoder feedback later), **18650**
   battery box (cells not included -- see the power note below), mounting
@@ -72,10 +74,12 @@ works with plain wheels). 2 of the 5 L298N boards give exactly 4 independent
 channels (2 boards x 2 channels each), one per wheel; the firmware mixes them
 for forward/strafe/rotate. 3 L298N boards stay spare.
 
-**Motor voltage**: the TT motors are rated 3-7.4V per the kit's own manual.
-A 2S (7.4V nominal) 18650 pack -- which is what the kit's battery box takes --
-lands comfortably in that range even before the L298N's own ~2V drop, but
-verify with a multimeter before running at full duty cycle regardless.
+**Motor voltage**: the TT motors are rated **3-6V** (printed on the motor
+casings) -- the driver system's supply can go up to 7.4V per the manual, but
+that's the input to the L298N, not the motor. A 2S (7.4V nominal) 18650 pack
+-- what the kit's battery box takes -- lands near 5.4V at the motor after the
+L298N's own ~2V drop, safely inside 3-6V, but verify with a multimeter before
+running at full duty cycle regardless.
 
 **Mecanum mixing reference** (from the kit's manual, for steps 6-7's firmware
 later -- transcribed from a photo, worth double-checking against the physical

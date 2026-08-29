@@ -10,12 +10,25 @@ but not run end-to-end until you have wheels turning to test against.
 
 ## Hardware inventory (on hand)
 
+Confirmed from the kit box lid and the chassis kit's product listing (Aug 2026).
+
 - 3x ESP32 Dev Kit boards
 - 5x L298N motor driver modules
-- Electronic Fun Kit -- power supply module, jumper/dupont wires, pin headers,
-  breadboard, resistors, LEDs, HC-SR04 ultrasonic sensor (confirmed on hand;
-  other sensors in the kit to be identified/added as needed, see [hello-esp32](../hello-esp32))
-- Car chassis kit, 4x DC motors, wheels, battery + battery connections
+- **Miuzei MA49 "Electronic Fun Kit"** -- power supply module, breadboard,
+  jumper/Dupont wires, pin headers, 2x potentiometer, LEDs + RGB LEDs, 4N35
+  optocoupler, 74HC595 shift register, NPN transistors, **photoresistors,
+  thermistors**, active/passive buzzers, buttons/switches, capacitors, diodes,
+  full resistor assortment. **Confirmed NOT in this kit**: no ultrasonic
+  sensor, no servo, no IR sensor.
+- HC-SR04 ultrasonic sensor -- separate from the kit above, confirmed on hand
+- **DWWTKL Mecanum Wheel Car Kit** -- aluminum chassis (186x161x91mm, 1500g
+  load capacity), 4x **mecanum wheels** (68mm dia., angled rollers --
+  omnidirectional, and *handed*: they must be mounted in the correct
+  front/rear-left/right orientation or the car won't strafe), 4x
+  **independent** TT gear motors (1:120 ratio, **3-6V rated** -- this is low;
+  see the power note below), motors include **speed encoders** (not used in
+  Phase 1, useful later for odometry/closed-loop speed), battery box
+  **included but no battery**, mounting screws
 - Raspberry Pi Zero W (2017) -- see [hello-raspberrypi](../hello-raspberrypi) for OS setup
 - NanoPi R2S -- optional, see [hello-nanopi](../hello-nanopi)
 - Bluetooth speaker
@@ -50,10 +63,16 @@ ESP32s and the NanoPi R2S are spare for later add-ons, not part of the MVP.
 wired anyway (same chassis), avoids WiFi latency/dropouts for motor commands,
 and both boards run 3.3V logic so no level shifter is needed.
 
-**Motor driver pairing**: 4 motors, 2 of the 5 L298N boards -- one channel per
-motor gives independent control of all 4 wheels (skid-steering: left-side
-motors always commanded together, right-side together). 3 L298N boards stay
-spare.
+**Motor driver pairing**: mecanum wheels need all 4 motors controlled
+**independently** (not left/right pairs -- that's skid-steering, which only
+works with plain wheels). 2 of the 5 L298N boards give exactly 4 independent
+channels (2 boards x 2 channels each), one per wheel; the firmware mixes them
+for forward/strafe/rotate. 3 L298N boards stay spare.
+
+**Motor voltage**: the TT motors are rated 3-6V, but the L298N's own H-bridge
+drops ~2V between input and output -- so a 7.4V (2S) battery could land in a
+safe ~5.5V at the motor, which is a common trick, but this must be verified
+with a multimeter before running at full duty cycle, not assumed.
 
 **LLM**: OpenAI API over the Pi's WiFi connection (your API key). This is a
 metered cloud service -- expect a small ongoing cost per patrol/conversation,
@@ -61,17 +80,34 @@ not a one-time hardware purchase.
 
 ## Phased plan
 
-1. **Drive** (implemented, untested) -- [`esp32/step1_drive.ino`](./esp32/step1_drive.ino)
-   reads F/B/L/R/S commands over UART and drives 2x L298N; [`pi/step1_dashboard/`](./pi/step1_dashboard)
-   is a Flask page with directional buttons that sends those commands over
-   `/dev/serial0`. Deploy the firmware with `cd esp32 && make deploy F=step1_drive.ino`
-   (same tooling as hello-esp32). Run the dashboard on the Pi with:
-   ```sh
-   cd pi/step1_dashboard
-   python3 -m venv venv && venv/bin/pip install -r requirements.txt
-   venv/bin/python app.py
-   ```
-   Verify wiring/direction before anything autonomous.
+1. **Drive** -- broken into its own sub-steps in [ASSEMBLY.md](./ASSEMBLY.md)
+   and [esp32/](./esp32) / [pi/](./pi), physical assembly first, dashboard
+   last:
+   1. Mount motors + mecanum wheels on the chassis (ASSEMBLY.md step 1 --
+      wheel orientation matters, read this before attaching anything)
+   2. Wire battery -> switch -> both L298N boards; verify motor voltage with
+      a multimeter (ASSEMBLY.md step 2)
+   3. Wire each of the 4 motors to its own L298N channel (ASSEMBLY.md step 3)
+   4. Mount the ESP32, wire the 2 L298N boards' 12 control pins to it
+      (ASSEMBLY.md step 4)
+   5. First firmware: spin one wheel only, no serial/network, just prove the
+      ESP32->L298N->motor chain works
+   6. All 4 wheels forward together, hardcoded -- catches any wheel wired
+      backward before trusting the mixing math
+   7. Mecanum mixing test (strafe/rotate) -- if this doesn't move as
+      expected, a wheel's likely mounted in the wrong handed position
+   8. Serial command control, typed into the Arduino IDE's Serial Monitor
+      over USB -- no Pi involved yet
+   9. Swap to the Pi: wire GPIO14/15, run the web dashboard, drive from a
+      browser
+
+   **Status**: only the assembly steps (1-4) are written so far, in
+   ASSEMBLY.md. [`esp32/step1_drive.ino`](./esp32/step1_drive.ino) and
+   [`pi/step1_dashboard/`](./pi/step1_dashboard) were an earlier draft built
+   before the wheels were confirmed mecanum -- their skid-steering logic
+   (left/right motor pairs) is wrong for this chassis and needs a mecanum
+   mixing rewrite (steps 5-9 above) before use. Left in place for reference,
+   not for deploying as-is.
 2. **Sense** -- add the HC-SR04 ultrasonic sensor to the ESP32; a simple
    auto-patrol state machine (drive forward, stop/turn near obstacles).
 3. **Think** -- Pi calls the OpenAI API to turn patrol telemetry into a log/
@@ -104,6 +140,13 @@ not a one-time hardware purchase.
   dedicated WiFi AP or VPN/reverse-proxy for remote dashboard access).
 - **MicroSD card for the Pi Zero** -- not in your listed inventory; flagged in
   the shopping list in case it's still needed.
+- **Battery not yet chosen** -- the chassis kit's battery box came without one.
+  Needs to land the motors in their 3-6V range (through the L298N's ~2V drop --
+  see the power note above); confirm cell count/chemistry before wiring.
+- **Mecanum wheel handedness unconfirmed** -- check for L/R or A/B markings on
+  the wheel hubs before mounting (ASSEMBLY.md step 1); mounting them in the
+  wrong front/rear-left/right positions means the car drives fine forward/back
+  but can't strafe correctly.
 
 ## Missing / to buy
 

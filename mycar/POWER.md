@@ -34,9 +34,8 @@ under motor stall current.
 
 ## Battery: 2x 18650, protected cells, in series
 
-- The kit's included battery box holds 18650 cells (not included) -- confirm
-  its slot count, this assumes 2 (2S, ~7.4V nominal, ~8.4V full charge, ~6V
-  discharged cutoff).
+- The kit includes an **18650 x2 battery holder** (cells not included) --
+  2S, ~7.4V nominal, ~8.4V full charge, ~6V discharged cutoff.
 - **Buy protected cells** (they have a small protection PCB built into the
   cell itself, slightly longer than bare cells) -- not raw/unprotected ones.
   This is the actual safety-critical part of this whole design: an
@@ -115,9 +114,6 @@ measuring in practice once assembled rather than trusting this estimate.
 
 ## Open items
 
-- **Confirm the battery box's actual cell count** -- this whole doc assumes
-  2 (2S). If it's different, the voltage math in the Motor voltage note
-  (README) needs rechecking.
 - **Not yet decided**: single shared battery (this doc's design) vs fully
   separate battery packs for motors vs logic. Shared is simpler/lighter/
   cheaper and should be fine with proper regulation; if brownouts or noise

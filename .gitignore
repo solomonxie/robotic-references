@@ -1,3 +1,5 @@
 venv/
 build/
 sketch.yaml
+__pycache__/
+*.pyc

@@ -2,8 +2,11 @@
 
 An autonomous home-patrol robot: drives around the house on its own checking on
 things like a patrol officer, sees, hears, talks, avoids obstacles, and can be
-watched or manually driven from a browser dashboard on the home WiFi. This is a
-plan/design document -- no car-control code exists yet.
+watched or manually driven from a browser dashboard on the home WiFi.
+
+Implementation is unverified against real hardware -- the car isn't assembled yet
+(see [SHOPPING_LIST.md](./SHOPPING_LIST.md)), so each step is compiled/syntax-checked
+but not run end-to-end until you have wheels turning to test against.
 
 ## Hardware inventory (on hand)
 
@@ -58,8 +61,17 @@ not a one-time hardware purchase.
 
 ## Phased plan
 
-1. **Drive** -- ESP32 + 2x L298N move all 4 wheels; Pi dashboard has manual
-   directional controls; verify wiring/direction before anything autonomous.
+1. **Drive** (implemented, untested) -- [`esp32/step1_drive.ino`](./esp32/step1_drive.ino)
+   reads F/B/L/R/S commands over UART and drives 2x L298N; [`pi/step1_dashboard/`](./pi/step1_dashboard)
+   is a Flask page with directional buttons that sends those commands over
+   `/dev/serial0`. Deploy the firmware with `cd esp32 && make deploy F=step1_drive.ino`
+   (same tooling as hello-esp32). Run the dashboard on the Pi with:
+   ```sh
+   cd pi/step1_dashboard
+   python3 -m venv venv && venv/bin/pip install -r requirements.txt
+   venv/bin/python app.py
+   ```
+   Verify wiring/direction before anything autonomous.
 2. **Sense** -- add the HC-SR04 ultrasonic sensor to the ESP32; a simple
    auto-patrol state machine (drive forward, stop/turn near obstacles).
 3. **Think** -- Pi calls the OpenAI API to turn patrol telemetry into a log/
@@ -78,6 +90,10 @@ not a one-time hardware purchase.
 
 - **Pi<->ESP32 link is Serial, not WiFi.** Switch this if you'd rather keep the
   boards physically separable.
+- **Pi Zero W's Bluetooth competes with GPIO14/15 for the good UART** -- BT (needed
+  for the speaker) claims the PL011 UART by default, pushing GPIO14/15 onto the
+  less stable mini-UART. Add `core_freq=250` to `/boot/config.txt` once both are
+  in use, or the serial link to the ESP32 can get flaky.
 - **Power**: unconfirmed whether the Electronic Fun Kit's power supply module
   can supply both motor voltage (7.4-12V typical) *and* a clean, separate 5V
   rail for the Pi. Motor stall current can brown out a Pi sharing the same

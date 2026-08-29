@@ -81,8 +81,8 @@ not a one-time hardware purchase.
 ## Phased plan
 
 1. **Drive** -- broken into its own sub-steps in [ASSEMBLY.md](./ASSEMBLY.md)
-   and [esp32/](./esp32) / [pi/](./pi), physical assembly first, dashboard
-   last:
+   and this folder's firmware/dashboard files, physical assembly first,
+   dashboard last:
    1. Mount motors + mecanum wheels on the chassis (ASSEMBLY.md step 1 --
       wheel orientation matters, read this before attaching anything)
    2. Wire battery -> switch -> both L298N boards; verify motor voltage with
@@ -102,11 +102,11 @@ not a one-time hardware purchase.
       browser
 
    **Status**: only the assembly steps (1-4) are written so far, in
-   ASSEMBLY.md. [`esp32/step1_drive.ino`](./esp32/step1_drive.ino) and
-   [`pi/step1_dashboard/`](./pi/step1_dashboard) were an earlier draft built
-   before the wheels were confirmed mecanum -- their skid-steering logic
-   (left/right motor pairs) is wrong for this chassis and needs a mecanum
-   mixing rewrite (steps 5-9 above) before use. Left in place for reference,
+   ASSEMBLY.md. [`step1_drive.ino`](./step1_drive.ino) and
+   [`app.py`](./app.py) were an earlier draft built before the wheels were
+   confirmed mecanum -- their skid-steering logic (left/right motor pairs)
+   is wrong for this chassis and needs a mecanum mixing rewrite (steps 5-9
+   above) before use. Left in place for reference,
    not for deploying as-is.
 2. **Sense** -- add the HC-SR04 ultrasonic sensor to the ESP32; a simple
    auto-patrol state machine (drive forward, stop/turn near obstacles).

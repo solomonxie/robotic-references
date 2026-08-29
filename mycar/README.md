@@ -32,7 +32,7 @@ its product listing (Aug 2026).
   reaches the motor), TT joints (motor-to-wheel couplers),
   coding discs for the motor encoders (**no encoder sensor board included**
   in this kit -- open item if you want encoder feedback later), **18650**
-  battery box (cells not included -- see the power note below), mounting
+  battery box (cells not included -- see [POWER.md](./POWER.md)), mounting
   screws
 - Raspberry Pi Zero W (2017) -- see [hello-raspberrypi](../hello-raspberrypi) for OS setup
 - NanoPi R2S -- optional, see [hello-nanopi](../hello-nanopi)
@@ -74,12 +74,8 @@ works with plain wheels). 2 of the 5 L298N boards give exactly 4 independent
 channels (2 boards x 2 channels each), one per wheel; the firmware mixes them
 for forward/strafe/rotate. 3 L298N boards stay spare.
 
-**Motor voltage**: the TT motors are rated **3-6V** (printed on the motor
-casings) -- the driver system's supply can go up to 7.4V per the manual, but
-that's the input to the L298N, not the motor. A 2S (7.4V nominal) 18650 pack
--- what the kit's battery box takes -- lands near 5.4V at the motor after the
-L298N's own ~2V drop, safely inside 3-6V, but verify with a multimeter before
-running at full duty cycle regardless.
+**Power supply**: battery choice, motor voltage math, and how the Pi + ESP32
+get a separate clean 5V rail is its own document -- see [POWER.md](./POWER.md).
 
 **Mecanum mixing reference** (from the kit's manual, for steps 6-7's firmware
 later -- transcribed from a photo, worth double-checking against the physical
@@ -115,8 +111,8 @@ not a one-time hardware purchase.
    dashboard last:
    1. Mount motors + mecanum wheels on the chassis (ASSEMBLY.md step 1 --
       wheel orientation matters, read this before attaching anything)
-   2. Wire battery -> switch -> both L298N boards; verify motor voltage with
-      a multimeter (ASSEMBLY.md step 2)
+   2. Wire power for motors + Pi + ESP32; verify all outputs with a
+      multimeter (ASSEMBLY.md step 2, full design in POWER.md)
    3. Wire each of the 4 motors to its own L298N channel (ASSEMBLY.md step 3)
    4. Mount the ESP32, wire the 2 L298N boards' 12 control pins to it
       (ASSEMBLY.md step 4)
@@ -160,19 +156,13 @@ not a one-time hardware purchase.
   for the speaker) claims the PL011 UART by default, pushing GPIO14/15 onto the
   less stable mini-UART. Add `core_freq=250` to `/boot/config.txt` once both are
   in use, or the serial link to the ESP32 can get flaky.
-- **Power**: unconfirmed whether the Electronic Fun Kit's power supply module
-  can supply both motor voltage (7.4-12V typical) *and* a clean, separate 5V
-  rail for the Pi. Motor stall current can brown out a Pi sharing the same
-  supply -- if there's no separate regulated 5V source already, add the buck
-  converter in the shopping list.
+- **Power supply open items** -- see POWER.md's own "Open items" section
+  (battery box cell count, shared-vs-separate battery for motors/logic).
 - **NanoPi R2S's job is undecided** -- it has no WiFi/camera/GPIO header, so
   it can't replace the Pi; it's optional infrastructure for later (e.g.
   dedicated WiFi AP or VPN/reverse-proxy for remote dashboard access).
 - **MicroSD card for the Pi Zero** -- not in your listed inventory; flagged in
   the shopping list in case it's still needed.
-- **Battery not yet chosen** -- the chassis kit's battery box came without one.
-  Needs to land the motors in their 3-6V range (through the L298N's ~2V drop --
-  see the power note above); confirm cell count/chemistry before wiring.
 - **Mecanum wheel handedness unconfirmed** -- check for L/R or A/B markings on
   the wheel hubs before mounting (ASSEMBLY.md step 1); mounting them in the
   wrong front/rear-left/right positions means the car drives fine forward/back

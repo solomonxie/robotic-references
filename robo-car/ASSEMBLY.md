@@ -1,4 +1,4 @@
-# mycar assembly (Phase 1, steps 1-4: physical + wiring, no code)
+# robo-car assembly (Phase 1, steps 1-4: physical + wiring, no code)
 
 Steps 5-9 (firmware, then the Pi dashboard) live flat in this same folder
 once these are done -- see [README.md](./README.md#phased-plan). Power supply

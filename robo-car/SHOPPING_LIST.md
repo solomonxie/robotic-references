@@ -1,4 +1,4 @@
-# mycar shopping list
+# robo-car shopping list
 
 All sourced from AliExpress. Prices are rough estimates from a spot search
 (Aug 2026), not live quotes -- check current listings/seller ratings before

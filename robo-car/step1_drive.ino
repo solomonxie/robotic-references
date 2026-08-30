@@ -1,4 +1,4 @@
-// mycar Phase 1: Drive -- manual motor control, commanded over UART from the Pi
+// robo-car Phase 1: Drive -- manual motor control, commanded over UART from the Pi
 // Wiring:
 //   L298N #1 (left side):  IN1->GPIO26, IN2->GPIO27, ENA->GPIO25 (PWM speed)
 //   L298N #2 (right side): IN1->GPIO32, IN2->GPIO33, ENA->GPIO23 (PWM speed)

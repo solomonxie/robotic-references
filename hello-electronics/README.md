@@ -32,3 +32,9 @@ venv/bin/python hello-electronics/hello_01_ohms_law.py
    drop as heat
 10. Voltage sag under load + shared ground reference -- why robo-car
     splits into two power rails but still ties every board's GND together
+11. H-bridge motor direction -- how an L298N channel's IN1/IN2/EN pins
+    reverse, brake, or coast a DC motor, and PWM duty as effective average
+    motor voltage (mirrors robo-car's step1_drive.ino)
+12. L298N voltage drop + per-channel current budget -- applies steps 4+9's
+    ideas to a real driver chip: the ~2V drop that sets motor voltage, and
+    why paralleling motors on one channel adds their stall currents
